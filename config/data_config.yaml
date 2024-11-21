@@ -1,0 +1,22 @@
+# data_config.yaml
+
+data_sources:
+  yahoo_finance:
+    enabled: true
+    symbols: ["AAPL", "GOOGL", "MSFT"]  # List of stock symbols
+    start_date: "2018-01-01"
+    end_date: "2023-01-01"
+    interval: "1d"  # Daily data
+
+  alpha_vantage:
+    enabled: false
+    api_key: "${API_KEY}"  # API key stored in env variables
+    symbols: ["AAPL", "TSLA"]
+    start_date: "2018-01-01"
+    end_date: "2023-01-01"
+    interval: "1min"  # Intraday data
+
+data_storage:
+  raw_data_path: "../data/raw"
+  processed_data_path: "../data/processed"
+  logs_path: "../data/logs"

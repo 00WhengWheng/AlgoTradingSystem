@@ -1,0 +1,12 @@
+strategy:
+  name: "Trend Following"
+  parameters:
+    moving_average_window: 50
+    stop_loss: 0.10
+    take_profit: 0.15
+  objectives:
+    - name: "High Risk, Short Term"
+    - name: "Low Risk, Long Term"
+  constraints:
+    max_drawdown: 0.15
+    risk_tolerance: "medium"

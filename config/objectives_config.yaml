@@ -1,0 +1,14 @@
+objectives:
+  - name: "High Risk, Short Term"
+    risk_tolerance: "high"
+    investment_horizon: "short"
+    return_expectation: "high"
+    capital_allocation: "low"
+    market_condition: "high_volatility"
+
+  - name: "Low Risk, Long Term"
+    risk_tolerance: "low"
+    investment_horizon: "long"
+    return_expectation: "low"
+    capital_allocation: "high"
+    market_condition: "low_volatility"

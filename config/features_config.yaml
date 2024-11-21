@@ -1,0 +1,28 @@
+# features_config.yaml
+
+technical_indicators:
+  SMA:
+    enabled: true
+    window: 50
+
+  EMA:
+    enabled: true
+    window: 200
+
+  RSI:
+    enabled: true
+    period: 14
+
+custom_features:
+  Bollinger_Bands:
+    enabled: true
+    window: 20
+    num_std: 2
+
+  Volatility:
+    enabled: true
+    window: 20
+
+scaling:
+  min_max: ["SMA_50", "EMA_200", "RSI"]
+  standard: ["Volatility_20"]
