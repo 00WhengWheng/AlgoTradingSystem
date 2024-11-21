@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: generatrade-config
+data:
+  ENV: "production"
+  API_ENDPOINT: "https://api.generatrade.com"

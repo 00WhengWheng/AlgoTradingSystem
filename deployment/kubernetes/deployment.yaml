@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: generatrade-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: generatrade
+  template:
+    metadata:
+      labels:
+        app: generatrade
+    spec:
+      containers:
+      - name: generatrade-container
+        image: gcr.io/generatrade/generatrade-app:latest
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: generatrade-config

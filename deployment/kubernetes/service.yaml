@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: generatrade-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: generatrade
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
