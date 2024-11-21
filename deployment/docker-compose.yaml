@@ -1,0 +1,17 @@
+version: '3'
+services:
+  trading-app:
+    build: .
+    container_name: trading_app
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: trading_data
+    ports:
+      - "5432:5432"

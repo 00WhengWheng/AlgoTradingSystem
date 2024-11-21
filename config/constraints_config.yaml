@@ -1,0 +1,10 @@
+constraints:
+  high_risk:
+    max_drawdown: 0.20
+    stop_loss: 0.10
+    leverage: 2.0
+
+  low_risk:
+    max_drawdown: 0.05
+    stop_loss: 0.03
+    leverage: 1.0

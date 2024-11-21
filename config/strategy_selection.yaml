@@ -1,0 +1,8 @@
+strategy_selection:
+  high_volatility:
+    high_risk: ["trend_following", "breakout"]
+    low_risk: ["mean_reversion", "pairs_trading"]
+
+  low_volatility:
+    high_risk: ["volatility_arbitrage", "mean_reversion"]
+    low_risk: ["pairs_trading", "trend_following"]

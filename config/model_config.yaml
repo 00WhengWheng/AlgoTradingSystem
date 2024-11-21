@@ -1,0 +1,22 @@
+# model_config.yaml
+
+model:
+  type: "RandomForest"  # Options: RandomForest, XGBoost, LSTM, etc.
+  save_path: "../models/saved_models"
+  hyperparameters:
+    RandomForest:
+      n_estimators: 100
+      max_depth: null
+      min_samples_split: 2
+    XGBoost:
+      learning_rate: 0.01
+      n_estimators: 100
+      max_depth: 6
+
+training:
+  test_size: 0.2
+  random_state: 42
+  cross_validation:
+    enabled: true
+    folds: 5
+    scoring_metric: "accuracy"

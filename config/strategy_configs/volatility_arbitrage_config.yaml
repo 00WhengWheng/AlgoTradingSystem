@@ -1,0 +1,13 @@
+strategy:
+  name: "Volatility Arbitrage"
+  parameters:
+    volatility_window: 20
+    entry_threshold: 0.02
+    stop_loss: 0.15
+    take_profit: 0.20
+  objectives:
+    - name: "High Risk, Short Term"
+    - name: "High Risk, Long Term"
+  constraints:
+    max_drawdown: 0.25
+    risk_tolerance: "high"

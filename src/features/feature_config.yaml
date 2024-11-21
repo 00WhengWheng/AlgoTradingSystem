@@ -1,0 +1,17 @@
+# src/features/feature_config.yaml
+
+technical_indicators:
+  SMA: 50
+  EMA: 200
+  RSI: 14
+
+custom_features:
+  Volatility: 20
+  Momentum: 10
+  Bollinger_Bands:
+    window: 20
+    num_std: 2
+
+scaling:
+  min_max: ['SMA_50', 'EMA_200', 'RSI']
+  standard: ['Volatility_20', 'Momentum_10']
