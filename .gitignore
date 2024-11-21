@@ -1,1 +1,2 @@
-deployment/
+deployment/terraform/
+deployment/gcp_deploy.sh
