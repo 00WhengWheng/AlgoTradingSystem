@@ -1,23 +1,25 @@
-from sklearn.decomposition import PCA
 
-def statistical_arbitrage_strategy(price_data):
-    """
-    Statistical Arbitrage Strategy using PCA.
-    
-    :param price_data: pd.DataFrame of price data for multiple securities.
-    :return: Signal DataFrame with mispricing signals.
-    """
-    pca = PCA(n_components=1)  # Extract first principal component
-    price_data['PCA_Component'] = pca.fit_transform(price_data)
-    
-    # Calculate residuals
-    reconstructed = pca.inverse_transform(price_data['PCA_Component'].values.reshape(-1, 1))
-    residuals = price_data.values - reconstructed
-    
-    # Compute z-scores for residuals
-    z_scores = (residuals - residuals.mean(axis=0)) / residuals.std(axis=0)
-    signals = np.where(z_scores > 2, 'Sell', np.where(z_scores < -2, 'Buy', 'Hold'))
-    
-    # Convert signals into a DataFrame
-    signal_df = pd.DataFrame(signals, columns=price_data.columns, index=price_data.index)
-    return signal_df
+import numpy as np
+import pandas as pd
+from statsmodels.tsa.stattools import coint
+
+def statistical_arbitrage(pair_prices, window=30, zscore_threshold=2):
+    if pair_prices.shape[1] != 2:
+        raise ValueError("Input DataFrame must contain exactly two columns for the pair.")
+    _, p_value, _ = coint(pair_prices.iloc[:, 0], pair_prices.iloc[:, 1])
+    if p_value > 0.05:
+        raise ValueError("The pair is not cointegrated.")
+    hedge_ratio = np.polyfit(pair_prices.iloc[:, 0], pair_prices.iloc[:, 1], 1)[0]
+    spread = pair_prices.iloc[:, 1] - hedge_ratio * pair_prices.iloc[:, 0]
+    rolling_mean = spread.rolling(window=window).mean()
+    rolling_std = spread.rolling(window=window).std()
+    zscore = (spread - rolling_mean) / rolling_std
+    signals = np.where(zscore > zscore_threshold, "Short", 
+                       np.where(zscore < -zscore_threshold, "Long", "Neutral"))
+    return pd.DataFrame({
+        "Asset1": pair_prices.iloc[:, 0],
+        "Asset2": pair_prices.iloc[:, 1],
+        "Spread": spread,
+        "Z-Score": zscore,
+        "Signal": signals
+    })

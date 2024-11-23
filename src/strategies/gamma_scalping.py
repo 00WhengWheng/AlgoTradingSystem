@@ -1,30 +1,34 @@
-from math import exp, sqrt, log
-from scipy.stats import norm
+import pandas as pd
 
-def black_scholes_greeks(spot_price, strike_price, time_to_maturity, risk_free_rate, volatility, option_type='call'):
+def gamma_scalping(option_data, spot_price, delta_threshold=0.1, gamma_multiplier=2):
     """
-    Calculate Delta and Gamma using Black-Scholes.
-    
+    Gamma Scalping Strategy.
+    Uses gamma to manage option positions and hedge dynamically.
+
+    :param option_data: pd.DataFrame with columns ['Delta', 'Gamma', 'Quantity'].
     :param spot_price: Current price of the underlying asset.
-    :param strike_price: Strike price of the option.
-    :param time_to_maturity: Time to maturity in years.
-    :param risk_free_rate: Annual risk-free interest rate.
-    :param volatility: Annualized volatility of the underlying.
-    :param option_type: 'call' or 'put'.
-    :return: Delta and Gamma.
+    :param delta_threshold: Threshold for rebalancing delta.
+    :param gamma_multiplier: Factor to scale gamma for dynamic hedging.
+    :return: DataFrame with hedging adjustments and rebalancing signals.
     """
-    d1 = (log(spot_price / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * time_to_maturity) / (volatility * sqrt(time_to_maturity))
-    d2 = d1 - volatility * sqrt(time_to_maturity)
-    
-    # Calculate Delta
-    if option_type == 'call':
-        delta = norm.cdf(d1)
-    elif option_type == 'put':
-        delta = norm.cdf(d1) - 1
-    else:
-        raise ValueError("Invalid option type. Use 'call' or 'put'.")
-    
-    # Calculate Gamma
-    gamma = norm.pdf(d1) / (spot_price * volatility * sqrt(time_to_maturity))
-    
-    return delta, gamma
+    # Calculate position delta and gamma for the portfolio
+    option_data["Position Delta"] = option_data["Delta"] * option_data["Quantity"]
+    option_data["Position Gamma"] = option_data["Gamma"] * option_data["Quantity"]
+
+    # Total delta and gamma of the portfolio
+    total_delta = option_data["Position Delta"].sum()
+    total_gamma = option_data["Position Gamma"].sum()
+
+    # Adjustment needed to hedge delta-neutrality considering gamma
+    adjustment_needed = -total_delta / (spot_price * gamma_multiplier)
+
+    # Generate rebalancing signal
+    signal = "Rebalance" if abs(total_delta) > delta_threshold else "Hold"
+
+    return {
+        "Option Portfolio": option_data,
+        "Total Delta": total_delta,
+        "Total Gamma": total_gamma,
+        "Adjustment Needed": adjustment_needed,
+        "Signal": signal
+    }

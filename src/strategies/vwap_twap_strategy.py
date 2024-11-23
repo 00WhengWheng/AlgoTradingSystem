@@ -1,13 +1,14 @@
-def adjusted_vwap(prices, volumes, slippage=0.0005):
-    """
-    Adjust VWAP for execution slippage.
-    
-    :param prices: pd.Series of intraday prices.
-    :param volumes: pd.Series of intraday volumes.
-    :param slippage: Execution slippage as a fraction of price.
-    :return: Adjusted VWAP.
-    """
-    raw_vwap = (prices * volumes).sum() / volumes.sum()
-    adjusted_vwap = raw_vwap * (1 + slippage)
-    print(f"Adjusted VWAP: {adjusted_vwap:.2f}")
-    return adjusted_vwap
+
+import pandas as pd
+
+def vwap_twap_strategy(prices, volumes, strategy_type="VWAP", total_order=1000, time_intervals=10):
+    if strategy_type == "VWAP":
+        vwap = (prices * volumes).sum() / volumes.sum()
+        allocation = (volumes / volumes.sum()) * total_order
+        return pd.DataFrame({"Price": prices, "Volume": volumes, "VWAP Order Allocation": allocation})
+    elif strategy_type == "TWAP":
+        order_per_interval = total_order / time_intervals
+        allocation = [order_per_interval] * time_intervals
+        return pd.DataFrame({"Interval": range(1, time_intervals + 1), "TWAP Order Allocation": allocation})
+    else:
+        raise ValueError("Invalid strategy type. Use 'VWAP' or 'TWAP'.")
