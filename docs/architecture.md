@@ -1,52 +1,63 @@
 # System Architecture
 
 ## Overview
-This trading algorithm system is designed to fetch market data, preprocess it, engineer features, train and evaluate models, and perform backtesting on various trading strategies. Below is an overview of the primary components and their interactions.
+The system is designed for scalability and resilience, integrating real-time data collection, strategy evaluation, and trading execution.
 
-## Key Components
+---
 
-### 1. Data Acquisition
-- **Folder**: `src/data/scripts`
-- **Description**: Handles fetching historical market data from financial APIs (e.g., Yahoo Finance) and stores it in a structured format.
-- **Key Scripts**:
-  - `fetch_data.py`
-  - `preprocess_data.py`
+## Components
 
-### 2. Feature Engineering
-- **Folder**: `src/features`
-- **Description**: Applies technical indicators, custom features, and normalization techniques to the data.
-- **Key Scripts**:
-  - `technical_indicators.py`
-  - `custom_features.py`
-  - `feature_scaling.py`
+1. **Data Pipeline**
+   - Collects market data using yFinance and Alpha Vantage.
+   - Stores data in PostgreSQL for analysis.
+   
+2. **Strategy Engine**
+   - Executes trading strategies and calculates signals.
+   
+3. **Trading Executor**
+   - Sends buy/sell orders to Interactive Brokers.
 
-### 3. Models
-- **Folder**: `src/models`
-- **Description**: Manages training, saving, and loading of machine learning models.
-- **Key Scripts**:
-  - `model_trainer.py`
-  - `model_evaluator.py`
+---
 
-### 4. Backtesting
-- **Folder**: `src/backtesting`
-- **Description**: Runs backtests on trading strategies using historical data and calculates performance metrics.
-- **Key Scripts**:
-  - `backtester.py`
-  - `performance_metrics.py`
+## Diagram
+```plantuml
+@startuml
+actor User
+participant "Dashboard (Web)" as Dashboard
+participant "API Gateway" as API
+participant "Data Pipeline" as Pipeline
+participant "Database (PostgreSQL)" as DB
+participant "Broker (Interactive Brokers)" as Broker
 
-### 5. Strategies
-- **Folder**: `src/strategies`
-- **Description**: Contains implementations of individual trading strategies.
-- **Key Scripts**:
-  - `moving_average_crossover.py`
-  - `mean_reversion.py`
+User -> Dashboard: Manages strategies
+Dashboard -> API: Sends requests
+API -> Pipeline: Collects market data
+Pipeline -> DB: Stores data
+API -> DB: Fetches data
+API -> Broker: Executes trades
+@enduml
 
-### 6. Utilities
-- **Folder**: `src/utils`
-- **Description**: Helper functions for configuration loading, logging, database connections, and data utilities.
 
-## Workflow Diagram
-*Include a flowchart or diagram here if applicable, showing data flow through the components (e.g., from data acquisition to feature engineering, model training, and backtesting).*
+---
 
-## Deployment
-This system is designed for deployment on Google Cloud Platform (GCP), leveraging services such as Cloud Storage for data, AI Platform for model deployment, and Kubernetes Engine for scaling.
+### **3. `setup_guide.md`**
+Guida all’installazione e configurazione.
+
+```markdown
+# Setup Guide
+
+## Prerequisites
+1. **Python 3.8+**
+2. **PostgreSQL**
+3. **Docker and Docker Compose**
+4. **API keys for Alpha Vantage and yFinance**
+5. **Interactive Brokers account with API enabled**
+
+---
+
+## Installation Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/algotrading.git
+   cd algotrading

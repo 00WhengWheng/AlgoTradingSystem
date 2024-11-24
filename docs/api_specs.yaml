@@ -1,0 +1,42 @@
+
+---
+
+### **4. `api_specs.yaml`**
+Specifiche dettagliate delle API.
+
+```yaml
+openapi: "3.0.0"
+info:
+  title: "Algorithmic Trading System API"
+  version: "1.0.0"
+paths:
+  /api/market_data:
+    get:
+      summary: "Retrieve market data"
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: from_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: to_date
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              example:
+                symbol: "AAPL"
+                data:
+                  - date_time: "2024-11-01T10:00:00Z"
+                    open: 150.0
+                    close: 155.0

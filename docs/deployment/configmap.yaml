@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: algotrading-config
+data:
+  DB_HOST: "postgresql"
+  DB_USER: "trading_user"
+  ALPHA_VANTAGE_API_KEY: "your_alpha_vantage_key"
