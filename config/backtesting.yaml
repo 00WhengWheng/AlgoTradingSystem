@@ -1,0 +1,8 @@
+# File: backtesting/config/backtesting.yaml
+backtesting:
+  initial_capital: 10000
+  commission: 0.001  # Commissione per trade
+
+walk_forward:
+  training_window: 1000  # Numero di giorni per l'allenamento
+  testing_window: 200    # Numero di giorni per il test

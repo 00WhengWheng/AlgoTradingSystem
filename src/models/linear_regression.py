@@ -1,12 +1,8 @@
-# models/linear_regression.py
-
-import pandas as pd
 from sklearn.linear_model import LinearRegression
-from .base_model import BaseModel
+from sklearn.metrics import mean_squared_error
 
 class LinearRegressionModel(BaseModel):
-    def __init__(self, data, params=None):
-        super().__init__(data, params)
+    def __init__(self):
         self.model = LinearRegression()
 
     def train(self, X_train, y_train):
@@ -14,3 +10,7 @@ class LinearRegressionModel(BaseModel):
 
     def predict(self, X):
         return self.model.predict(X)
+
+    def evaluate(self, X_val, y_val):
+        predictions = self.predict(X_val)
+        return {"RMSE": mean_squared_error(y_val, predictions, squared=False)}
