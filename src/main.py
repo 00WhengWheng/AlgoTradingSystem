@@ -10,7 +10,7 @@ def main():
     # Step 1: Data Collection
     collector = DataCollector()
     data = collector.fetch_from_yfinance("AAPL", "2020-01-01", "2023-01-01")
-    data = FeatureEngineer.add_features(data)
+    data = FeatureEngineer.add_feature(data)
 
     # Step 2: Prepare Data
     X_train, X_val, X_test, y_train, y_val, y_test = prepare_data(data)
